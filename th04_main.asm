@@ -24261,7 +24261,7 @@ loc_1C400:
 		mov	_boss_pos.cur.y, (96 shl 4)
 		mov	_boss_pos.prev.x, 0
 		call	@boss_phase_next$q16explosion_type_ti pascal, (ET_NONE shl 16) or 0
-		mov	byte_25A24, 0
+		mov	_elly_phase, 0
 		jmp	loc_1C67A
 ; ---------------------------------------------------------------------------
 
@@ -24344,7 +24344,7 @@ loc_1C4A9:
 
 loc_1C4BA:
 		inc	_boss_phase_state
-		mov	al, byte_25A24
+		mov	al, _elly_phase
 		mov	ah, 0
 		mov	bx, ax
 		cmp	bx, 4
@@ -24363,12 +24363,12 @@ loc_1C4D3:
 		jb	loc_1C57F
 
 loc_1C4EB:
-		mov	al, byte_25A24
+		mov	al, _elly_phase
 		mov	ah, 0
 		call	@boss_explode_small$q16explosion_type_t pascal, ax
 		mov	_boss_mode, -1
-		inc	byte_25A24
-		mov	al, byte_25A24
+		inc	_elly_phase
+		mov	al, _elly_phase
 		mov	ah, 0
 		imul	ax, 1500
 		mov	dx, 6000
@@ -24445,25 +24445,25 @@ loc_1C591:
 		mov	_boss_phase_frame, 0
 
 loc_1C5B1:
-		cmp	byte_25A24, 0
+		cmp	_elly_phase, 0
 		jnz	short loc_1C5C0
 		cmp	_boss_hp, 4700
 		jle	short loc_1C5F1
 
 loc_1C5C0:
-		cmp	byte_25A24, 1
+		cmp	_elly_phase, 1
 		jnz	short loc_1C5CF
 		cmp	_boss_hp, 3300
 		jle	short loc_1C5F1
 
 loc_1C5CF:
-		cmp	byte_25A24, 2
+		cmp	_elly_phase, 2
 		jnz	short loc_1C5DE
 		cmp	_boss_hp, 2100
 		jle	short loc_1C5F1
 
 loc_1C5DE:
-		cmp	byte_25A24, 3
+		cmp	_elly_phase, 3
 		jnz	loc_1C67A
 		cmp	_boss_hp, 700
 		jg	loc_1C67A
@@ -24476,12 +24476,12 @@ loc_1C5F1:
 
 loc_1C600:
 		call	@boss_score_bonus$qui pascal, 10
-		mov	al, byte_25A24
+		mov	al, _elly_phase
 		mov	ah, 0
 		call	@boss_explode_small$q16explosion_type_t pascal, ax
 		mov	_boss_mode, -1
 		mov	_boss_phase_frame, 0
-		inc	byte_25A24
+		inc	_elly_phase
 		jmp	short loc_1C67A
 ; ---------------------------------------------------------------------------
 
@@ -30166,7 +30166,7 @@ byte_25A1B	db ?
 		db 2 dup(?)
 byte_25A1E	db ?
 		db 5 dup(?)
-byte_25A24	db ?
+_elly_phase	db ?
 		db ?
 byte_25A26	db ?
 byte_25A27	db ?
