@@ -30167,7 +30167,7 @@ byte_25A1B	db ?
 		db 2 dup(?)
 byte_25A1E	db ?
 		db 5 dup(?)
-public _elly_phase	db ?
+public _elly_phase
 _elly_phase	db ?
 		db ?
 byte_25A26	db ?
