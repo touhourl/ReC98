@@ -12530,7 +12530,7 @@ enemy_velocity_set	endp
 
 ; Attributes: bp-based frame
 
-sub_155AA	proc near
+enemy_velocity_set_relative_to_player	proc near
 		push	bp
 		mov	bp, sp
 		push	si
@@ -12552,7 +12552,7 @@ sub_155AA	proc near
 		pop	si
 		pop	bp
 		retn
-sub_155AA	endp
+enemy_velocity_set_relative_to_player	endp
 
 
 ; =============== S U B	R O U T	I N E =======================================
@@ -12773,13 +12773,13 @@ loc_1579A:
 		jmp	loc_15B1A
 ; ---------------------------------------------------------------------------
 
-loc_157B7:
+enemy_script_op_aim_at_player:
 		mov	al, es:[di+1]
 		mov	[si+enemy_t.E_angle], al
 		mov	al, es:[di+2]
 		mov	ah, 0
 		mov	[si+enemy_t.E_speed], ax
-		call	sub_155AA
+		call	enemy_velocity_set_relative_to_player
 		jmp	loc_15A9D
 ; ---------------------------------------------------------------------------
 
@@ -13034,7 +13034,7 @@ loc_159DE:
 		jmp	loc_158BE
 ; ---------------------------------------------------------------------------
 
-loc_159E5:
+enemy_script_op_animation:
 		mov	al, es:[di+1]
 		mov	[si+enemy_t.E_anim_cels], al
 		mov	al, es:[di+2]
@@ -13049,7 +13049,7 @@ loc_159F6:
 		jmp	loc_15AE4
 ; ---------------------------------------------------------------------------
 
-loc_15A05:
+enemy_script_op_patnum_set:
 		mov	al, es:[di+1]
 		mov	[si+enemy_t.E_patnum_base], al
 		jmp	loc_15AE4
@@ -13113,7 +13113,7 @@ loc_15A76:
 		jmp	loc_15B1A
 ; ---------------------------------------------------------------------------
 
-loc_15A81:
+enemy_script_op_patnum_add:
 		mov	al, es:[di+1]
 		add	[si+enemy_t.E_patnum_base], al
 		jmp	short loc_15AE4
@@ -13242,7 +13242,7 @@ off_15B4D	dw offset loc_159A4
 		dw offset loc_15711
 		dw offset loc_15749
 		dw offset loc_15749
-		dw offset loc_157B7
+		dw offset enemy_script_op_aim_at_player
 		dw offset loc_157CD
 		dw offset loc_15721
 		dw offset loc_157D7
@@ -13366,16 +13366,16 @@ off_15B4D	dw offset loc_159A4
 		dw offset loc_159D3
 		dw offset loc_159DE
 		dw offset loc_159DA
-		dw offset loc_159E5
+		dw offset enemy_script_op_animation
 		dw offset loc_159F6
-		dw offset loc_15A05
+		dw offset enemy_script_op_patnum_set
 		dw offset loc_15A0F
 		dw offset loc_15A1E
 		dw offset loc_15A48
 		dw offset loc_15A60
 		dw offset loc_15A3A
 		dw offset loc_15A41
-		dw offset loc_15A81
+		dw offset enemy_script_op_patnum_add
 		dw offset loc_15AD2
 
 include th04/main/boss/explosions_reset.asm
@@ -15851,7 +15851,7 @@ loc_1736D:
 		mov	dl, 24
 		sub	dl, al
 		mov	_bullet_template.count, dl
-		cmp	byte_25674, 2
+		cmp	_marisa_phase, 2
 		jnz	short loc_173A2
 		mov	_bullet_template.count, 28
 
@@ -16587,7 +16587,7 @@ loc_17A75:
 		mov	_boss_phase_frame, 0
 		mov	_boss_sprite, 129
 		mov	byte_25673, 1
-		mov	byte_25674, 0
+		mov	_marisa_phase, 0
 		mov	byte_2566E, 0Ah
 		mov	byte_2566F, 0
 		mov	_boss_statebyte[13].BSB_flystep_pointreflected_tick, 0
@@ -16751,19 +16751,19 @@ loc_17BEB:
 loc_17BF0:
 		cmp	_boss_hp, 4500
 		jg	short loc_17BFF
-		cmp	byte_25674, 0
+		cmp	_marisa_phase, 0
 		jz	short loc_17C21
 
 loc_17BFF:
 		cmp	_boss_hp, 2500
 		jg	short loc_17C0E
-		cmp	byte_25674, 1
+		cmp	_marisa_phase, 1
 		jz	short loc_17C21
 
 loc_17C0E:
 		cmp	_boss_hp, 1000
 		jg	loc_17CA4
-		cmp	byte_25674, 2
+		cmp	_marisa_phase, 2
 		jnz	loc_17CA4
 
 loc_17C21:
@@ -16774,10 +16774,10 @@ loc_17C21:
 
 loc_17C30:
 		call	@boss_score_bonus$qui pascal, 10
-		mov	al, byte_25674
+		mov	al, _marisa_phase
 		mov	ah, 0
 		call	@boss_explode_small$q16explosion_type_t pascal, ax
-		inc	byte_25674
+		inc	_marisa_phase
 		jmp	short loc_17CA4
 ; ---------------------------------------------------------------------------
 
@@ -30085,7 +30085,8 @@ byte_25671	db ?
 public _bits_alive
 _bits_alive	db ?
 byte_25673	db ?
-byte_25674	db ?
+public _marisa_phase
+_marisa_phase	db ?
 	evendata
 
 public _bit_fire, _bit_center_x, _bit_center_y
@@ -30166,6 +30167,7 @@ byte_25A1B	db ?
 		db 2 dup(?)
 byte_25A1E	db ?
 		db 5 dup(?)
+public _elly_phase	db ?
 _elly_phase	db ?
 		db ?
 byte_25A26	db ?
